@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pg-client
+spec:
+  containers:
+    - image: bitnami/postgresql:11.12.0-debian-10-r13
+      name: postgresql
+      env:
+      - name: ALLOW_EMPTY_PASSWORD
+        value: "yes"
+# kubectl get secret postgres-secrets -n database -o jsonpath="{.data.postgresql-password}" | base64 --decode
+# kubectl exec -it pg-client -n database -- /bin/bash
+# PGPASSWORD=WbrTpN3g7q psql -h pgpool-svc -p 5432 -U postgres
+# select * from pg_stat_replication;
