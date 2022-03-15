@@ -94,7 +94,7 @@ metadata:
 provisioner: kubernetes.io/portworx-volume
 allowVolumeExpansion: true
 parameters:
-  repl: "3"
+  repl: "2"
   io_profile: "db_remote"
   io_priority: "high"
   secure: "true"
