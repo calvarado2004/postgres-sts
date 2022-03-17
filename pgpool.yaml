@@ -31,7 +31,6 @@ spec:
   ports:
     - name: postgresql
       port: 5432
-      nodePort: 32000
       targetPort: postgresql
       protocol: TCP
   selector:
@@ -52,12 +51,14 @@ spec:
         app: pgpool
     spec:          
       securityContext:
+        #type: RunAsAny
         fsGroup: 1001
       containers:
         - name: pgpool
           image: docker.io/bitnami/pgpool:4.2.3-debian-10-r38
           imagePullPolicy: "IfNotPresent"
           securityContext:
+            #type: RunAsAny
             runAsUser: 1001
           env:
             - name: BITNAMI_DEBUG

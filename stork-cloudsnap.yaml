@@ -1,0 +1,12 @@
+---
+#Stork cloud snapshot
+apiVersion: stork.libopenstorage.org/v1alpha1
+kind: GroupVolumeSnapshot
+metadata:
+  name: postgres-group-cloudsnapshot
+spec:
+  pvcSelector:
+    matchLabels:
+      app: postgres
+  options:
+    portworx/snapshot-type: cloud
