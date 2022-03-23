@@ -41,7 +41,7 @@ kind: Deployment
 metadata:
   name: pgpool-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels: 
       app: pgpool
@@ -51,15 +51,15 @@ spec:
         app: pgpool
     spec:          
       securityContext:
-        #type: RunAsAny
-        fsGroup: 1001
+        type: RunAsAny
+        #fsGroup: 1001
       containers:
         - name: pgpool
           image: docker.io/bitnami/pgpool:4.2.3-debian-10-r38
           imagePullPolicy: "IfNotPresent"
           securityContext:
-            #type: RunAsAny
-            runAsUser: 1001
+            type: RunAsAny
+            #runAsUser: 1001
           env:
             - name: BITNAMI_DEBUG
               value: "false"

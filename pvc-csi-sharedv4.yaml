@@ -1,0 +1,12 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: px-csi-sharedv4-pvc
+  annotations:
+    volume.beta.kubernetes.io/storage-class: px-csi-db-enc-sharedv4
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi

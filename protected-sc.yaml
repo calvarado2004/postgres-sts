@@ -1,0 +1,42 @@
+# Portworx Storage Class
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: portworx-db-protected-sc
+provisioner: kubernetes.io/portworx-volume
+allowVolumeExpansion: true
+parameters:
+  repl: "2"
+  io_profile: "db_remote"
+  io_priority: "high"
+  secure: "true"
+  cow_ondemand: "false"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: px-protected-pvc
+  annotations:
+    volume.beta.kubernetes.io/storage-class: portworx-db-protected-sc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-protected
+spec:
+  containers:
+  - name: test-container
+    image: gcr.io/google_containers/test-webserver
+    volumeMounts:
+    - name: test-volume
+      mountPath: /test-portworx-volume
+  volumes:
+  - name: test-volume
+    persistentVolumeClaim:
+      claimName: px-protected-pvc

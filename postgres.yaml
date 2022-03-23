@@ -127,11 +127,11 @@ spec:
                   operator: In
                   values:
                   - postgres
-            topologyKey: "kubernetes.io/hostname"
-            #topologyKey: topology.kubernetes.io/zone
+            #topologyKey: "kubernetes.io/hostname"
+            topologyKey: topology.kubernetes.io/zone
       securityContext:
-        #type: RunAsAny
-        fsGroup: 1001
+        type: RunAsAny
+        #fsGroup: 1001
       containers:
         - name: postgresql
           lifecycle:
@@ -142,8 +142,8 @@ spec:
           image: docker.io/bitnami/postgresql-repmgr:11.12.0-debian-10-r44
           imagePullPolicy: "IfNotPresent"
           securityContext:
-            #type: RunAsAny
-            runAsUser: 1001
+            type: RunAsAny
+            #runAsUser: 1001
           # Auxiliary vars to populate environment variables
           env:
             - name: BITNAMI_DEBUG
