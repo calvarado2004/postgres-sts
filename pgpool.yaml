@@ -10,7 +10,6 @@ spec:
       port: 5432
       targetPort: postgresql
       protocol: TCP
-      nodePort: null
   selector:
     app: pgpool
 ---
@@ -53,10 +52,37 @@ spec:
       securityContext:
         type: RunAsAny
         #fsGroup: 1001
+      affinity:
+        #Collocate the pod on a node with a postgres pod to maximize performance 
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: "app"
+                  operator: In
+                  values:
+                  - postgres
+            #topologyKey: "kubernetes.io/hostname"
+            topologyKey: topology.kubernetes.io/zone
+        #Do not collocate pgpool replicas on the same node where a pgpool replica is already running
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: "app"
+                  operator: In
+                  values:
+                  - pgpool
+            #topologyKey: "kubernetes.io/hostname"
+            topologyKey: topology.kubernetes.io/zone
       containers:
         - name: pgpool
           image: docker.io/bitnami/pgpool:4.2.3-debian-10-r38
           imagePullPolicy: "IfNotPresent"
+          resources:
+            limits:
+              memory: "1G"
+              cpu: "1"
           securityContext:
             type: RunAsAny
             #runAsUser: 1001
