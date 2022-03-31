@@ -1,0 +1,19 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  annotations:
+    px/secret-name: pwx/carlos-okd-vsphere-px/px_secret
+    volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/portworx-volume
+  name: data-postgres-sts-0
+  namespace: golang-app
+  labels:
+    app: postgres
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: portworx-db-sc
+  volumeMode: Filesystem
+

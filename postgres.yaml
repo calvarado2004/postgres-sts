@@ -139,7 +139,7 @@ spec:
               exec:
                 command:
                   - /pre-stop.sh
-          image: docker.io/bitnami/postgresql-repmgr:11.12.0-debian-10-r44
+          image: docker.io/bitnami/postgresql-repmgr:13.6.0
           imagePullPolicy: "IfNotPresent"
           securityContext:
             type: RunAsAny
@@ -220,6 +220,17 @@ spec:
             - name: postgresql
               containerPort: 5432
               protocol: TCP
+          startupProbe:
+            exec:
+              command:
+                - bash
+                - -ec
+                - 'PGPASSWORD=$POSTGRES_PASSWORD psql -w -U "postgres" -d "postgres"  -h 127.0.0.1 -c "SELECT 1"'
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 30
           livenessProbe:
             exec:
               command:
